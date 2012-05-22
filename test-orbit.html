@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript">
+function drawShape(){
+  // get the canvas element using the DOM
+  var canvas = document.getElementById('mycanvas');
+ 
+  // Make sure we don't execute when canvas isn't supported
+  if (canvas.getContext){
+ 
+    // use getContext to use the canvas for drawing
+    var ctx = canvas.getContext('2d');
+    
+    for (var phase = 0; phase < 360; phase++) {
+      var sin = Math.sin(Math.toRadians(phase));
+      console.log(phase);
+    }
+    
+    // x is centre plus sin scaling to the edges
+    // camera.position.x = (radius.x + (radius.x * sin));
+
+    // phase = 90 + (count % 360); // quarter turn out of phase
+    // sin = Math.sin(Math.toRadians(phase));
+    // x is centre plus sin scaling to the edges
+    // this.y = (int) (radius.y + (radius.y * sin));
+    
+    // Stroked triangle
+    ctx.beginPath();
+    ctx.moveTo(125,125);
+    ctx.lineTo(125,45);
+    ctx.lineTo(45,125);
+    ctx.closePath();
+    ctx.stroke();
+ 
+  } else {
+    alert('You need Safari or Firefox 1.5+ to see this demo.');
+  }
+}
+</script>
+</head>
+<body onload="drawShape();">
+   <canvas id="mycanvas"></canvas>
+</body>
+</html>
