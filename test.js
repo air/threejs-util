@@ -1,6 +1,7 @@
 "use strict";
 
 var renderer, camera, scene;
+var STATS;
 var MATS = {};
 // var ORBIT_RADIUS = 300;
 var MOUSE = {};
@@ -110,6 +111,11 @@ function init3d() {
   textQuad.rotation.x = 90;
   scene.add(textQuad);
 
+  STATS = new Stats();
+  STATS.domElement.style.position = 'absolute';
+  STATS.domElement.style.top = '0px';
+  document.body.appendChild(STATS.domElement);
+
   document.body.appendChild(renderer.domElement);
 }
 
@@ -169,4 +175,5 @@ function animate() {
   requestAnimationFrame(animate);
   update(new Date().getTime());
   render();
+  STATS.update();
 }
