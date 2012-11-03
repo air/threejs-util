@@ -1,66 +1,18 @@
 "use strict";
 
-var renderer, camera, scene;
-var STATS;
-var MATS = {};
 // var ORBIT_RADIUS = 300;
-var MOUSE = {};
 var LIGHTS = new Array();
-var WIDTH = window.innerWidth;
-var HEIGHT = window.innerHeight;
-var HALFWIDTH = window.innerWidth / 2;
-var HALFHEIGHT = window.innerHeight / 2;
 
 // main
 // TODO how does animate() loop?
 init3d();
+initTestObjects();
+document.body.appendChild(renderer.domElement);
 initListeners();
 console.log('init complete');
 animate();
 
-// mat is optional, defaults to yellow
-function markerAt(x, y, z, mat) {
-  if (!mat) {
-    mat = MATS.yellow;
-  }
-  var marker = new THREE.Mesh(new THREE.SphereGeometry(10, 16, 16), mat);
-  marker.position.x = x;
-  marker.position.y = y;
-  marker.position.z = z;
-  marker.castShadow = true;
-  scene.add(marker);
-  return marker;
-}
-
-function init3d() {
-  var VIEW_ANGLE = 45;
-  var ASPECT = WIDTH / HEIGHT;
-  var NEAR = 0.1;
-  var FAR = 10000;
-
-  renderer = new THREE.WebGLRenderer();
-  camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-  scene = new THREE.Scene();
-  scene.add(camera);
-  renderer.setSize(WIDTH, HEIGHT);
-  renderer.shadowMapEnabled = true;
-
-  MATS.red = new THREE.MeshLambertMaterial({
-    color : 0xDD0000
-  });
-  MATS.blue = new THREE.MeshLambertMaterial({
-    color : 0x0000DD
-  });
-  MATS.green = new THREE.MeshLambertMaterial({
-    color : 0x00DD00
-  });
-  MATS.white = new THREE.MeshLambertMaterial({
-    color : 0xFFFFFF
-  });
-  MATS.yellow = new THREE.MeshLambertMaterial({
-    color : 0xFFFF00
-  });
-
+function initTestObjects() {
   var radius = 50;
   var redSphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 20, 20), MATS.red);
   redSphere.position.x = 150;
@@ -110,39 +62,6 @@ function init3d() {
   textQuad.doubleSided = true;
   textQuad.rotation.x = 90;
   scene.add(textQuad);
-
-  STATS = new Stats();
-  STATS.domElement.style.position = 'absolute';
-  STATS.domElement.style.top = '0px';
-  document.body.appendChild(STATS.domElement);
-
-  document.body.appendChild(renderer.domElement);
-}
-
-function initListeners() {
-  // stop the script if we hit 'p' and debugger is open
-  $(window).keydown(function(e) {
-    if (e.keyCode == 80) {
-      debugger;
-    }
-  });
-  // capture mouse moves
-  document.addEventListener('mousemove', onDocumentMouseMove, false);
-  MOUSE.x = HALFWIDTH;
-  MOUSE.y = HALFHEIGHT;
-}
-
-// jerky and boring
-function changeLights() {
-  var x = random(-200, 200);
-  var y = random(-200, 200);
-  var z = random(-200, 200);
-  LIGHTS[1].position.x = x;
-  LIGHTS[1].position.y = y;
-  LIGHTS[1].position.z = z;
-  LIGHTS[1].marker.position.x = x;
-  LIGHTS[1].marker.position.y = y;
-  LIGHTS[1].marker.position.z = z;
 }
 
 // orbit camera around the Y axis by varying x and z
@@ -153,27 +72,10 @@ function update(t) {
   LIGHTS[1].position.z = Math.sin(t / 1000) * ORBIT_RADIUS;
   LIGHTS[1].marker.position.z = Math.sin(t / 1000) * ORBIT_RADIUS;
 
-  // camera.position.x = Math.sin(t / 1000) * (WIDTH - MOUSE.x);
+  camera.position.x = Math.sin(t / 1000) * (WIDTH - MOUSE.x);
   camera.position.y = HALFHEIGHT - MOUSE.y;
   camera.position.z = WIDTH - MOUSE.x;
-  // camera.position.z = Math.cos(t / 1000) * (WIDTH - MOUSE.x);
+  camera.position.z = Math.cos(t / 1000) * (WIDTH - MOUSE.x);
   // you need to update lookAt every frame
-  // camera.lookAt(scene.position);
-}
-
-// capture mouse moves
-function onDocumentMouseMove(event) {
-  MOUSE.x = event.clientX;
-  MOUSE.y = event.clientY;
-}
-
-function render() {
-  renderer.render(scene, camera);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-  update(new Date().getTime());
-  render();
-  STATS.update();
+  camera.lookAt(scene.position);
 }
