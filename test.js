@@ -1,10 +1,8 @@
 "use strict";
 
-// var ORBIT_RADIUS = 300;
 var LIGHTS = new Array();
 
 // main
-// TODO how does animate() loop?
 init3d();
 initTestObjects();
 document.body.appendChild(renderer.domElement);
@@ -13,8 +11,7 @@ console.log('init complete');
 animate();
 
 function initTestObjects() {
-  var radius = 50;
-  var redSphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 20, 20), MATS.red);
+  var redSphere = new THREE.Mesh(new THREE.SphereGeometry(50, 20, 20), MATS.red);
   redSphere.position.x = 150;
   redSphere.position.y = 50;
   redSphere.position.z = 0;

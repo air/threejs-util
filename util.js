@@ -109,6 +109,8 @@ function render() {
   renderer.render(scene, camera);
 }
 
+// TODO how does animate() loop?
+// req: update(t)
 function animate() {
   requestAnimationFrame(animate);
   update(new Date().getTime());
