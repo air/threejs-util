@@ -7,9 +7,9 @@ var controls;
 init3d();
 addHelpers();
 initTestObjects();
-initFlyControls();
-// initFirstPersonControls();
-// initPointerLockControls();
+//initFlyControls();
+initFirstPersonControls();
+//initPointerLockControls();
 document.body.appendChild(renderer.domElement);
 initListeners();
 console.log('init complete');
@@ -64,6 +64,7 @@ function initTestObjects() {
   camera.position.z=1000;
 }
 
+// fly controls will roll all over the place
 function initFlyControls(){
   controls = new THREE.FlyControls(camera);
   controls.movementSpeed = 5; // default 1.0
@@ -71,12 +72,23 @@ function initFlyControls(){
   controls.dragToLook = true;
 }
 
+// first person controls never roll
+// FIXME always inits facing away from origin!
 function initFirstPersonControls() {
+  controls = new THREE.FirstPersonControls(camera);
+  controls.movementSpeed = 5; // default 1.0
+  controls.lookSpeed = 0.001; // default 0.005
+  controls.constrainVertical = true; // default false
+  controls.verticalMin = 45 * TO_RADIANS;
+  controls.verticalMax = 135 * TO_RADIANS;
 
 }
 
+// TODO: seems complex to get the mouse https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_pointerlock.html
 function initPointerLockControls() {
-  
+  // https://github.com/mrdoob/three.js/issues/2591
+  //controls = new PointerLockControls(camera);
+  console.log("not implemented");
 }
 
 function update(t) {
