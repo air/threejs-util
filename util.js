@@ -18,6 +18,10 @@ function random(min, max) {
 //=============================================================================
 // three.js
 //=============================================================================
+
+var TO_RADIANS = Math.PI / 180;
+var TO_DEGREES = 180 / Math.PI;
+
 // rendering objects
 var renderer, camera, scene;
 // x and y
@@ -32,11 +36,13 @@ var MATS = {};
 // fps counter
 var STATS;
 
+// TODO add custom counters to STATS
+
 function init3d() {
-  var VIEW_ANGLE = 45;
+  var VIEW_ANGLE = 45; // degrees not radians
   var ASPECT = WIDTH / HEIGHT;
-  var NEAR = 0.1;
-  var FAR = 10000;
+  var NEAR = 0.1; // objects closer than this won't render
+  var FAR = 10000; // objects further away than this won't render
 
   renderer = new THREE.WebGLRenderer();
   camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
@@ -67,6 +73,13 @@ function init3d() {
   document.body.appendChild(STATS.domElement);
 }
 
+function addHelpers(){
+  var axis = new THREE.AxisHelper(300);
+  scene.add(axis);
+  var camHelp = new THREE.CameraHelper(camera);
+  scene.add(camHelp);
+}
+
 // mat is optional, defaults to yellow
 // req: scene
 function markerAt(x, y, z, mat) {
@@ -80,6 +93,26 @@ function markerAt(x, y, z, mat) {
   marker.castShadow = true;
   scene.add(marker);
   return marker;
+}
+
+// text will appear to top left of point, facing the camera
+function textAt(x, y, z, text) {
+  var c = document.createElement('canvas');
+  c.getContext('2d').font = '50px Arial';
+  c.getContext('2d').fillText(text, 2, 50);
+  var tex = new THREE.Texture(c);
+  tex.needsUpdate = true;
+  var mat = new THREE.MeshBasicMaterial({
+    map : tex
+  });
+  mat.transparent = true;
+  var textQuad = new THREE.Mesh(new THREE.PlaneGeometry(c.width/2, c.height/2), mat);
+  textQuad.doubleSided = true;
+  textQuad.position.x = x;
+  textQuad.position.y = y;
+  textQuad.position.z = z;
+  scene.add(textQuad);
+  return textQuad;
 }
 
 // add p to pause
@@ -109,7 +142,6 @@ function render() {
   renderer.render(scene, camera);
 }
 
-// TODO how does animate() loop?
 // req: update(t)
 function animate() {
   requestAnimationFrame(animate);
