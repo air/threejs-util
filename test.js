@@ -1,18 +1,21 @@
 "use strict";
 
 var LIGHTS = new Array();
+var controls;
 
 // main
 init3d();
 addHelpers();
 initTestObjects();
+initFlyControls();
+// initFirstPersonControls();
+// initPointerLockControls();
 document.body.appendChild(renderer.domElement);
 initListeners();
 console.log('init complete');
 animate();
 
 function initTestObjects() {
-  //var redSphere = new THREE.Mesh(new THREE.SphereGeometry(50, 20, 20), MATS.red);
   var redSphere = new THREE.Mesh(new THREE.SphereGeometry(50, 20, 20), MATS.red);
   redSphere.position.x = 150;
   redSphere.position.y = 50;
@@ -32,7 +35,7 @@ function initTestObjects() {
   LIGHTS[0].position.z = 130;
   LIGHTS[0].castShadow = true;
   markerAt(10, 50, 130, MATS.normal);
-  scene.add(LIGHTS[0]);
+  scene.add(LIGHTS[0]); 
 
   // this light will move
   LIGHTS[1] = new THREE.PointLight(0xFFFFFF);
@@ -46,8 +49,9 @@ function initTestObjects() {
   // floor
   var planeGeo = new THREE.PlaneGeometry(1000, 1000, 64, 64);
   var planeMat = MATS.green;
+  // give the material a back side
+  planeMat.side = THREE.DoubleSide;
   var plane = new THREE.Mesh(planeGeo, planeMat);
-  // plane is one-sided!
   // plane inits as a wall facing the camera, turn away to make a floor
   plane.rotation.x = -90 * TO_RADIANS;
   // sink the floor to get shadows
@@ -56,23 +60,42 @@ function initTestObjects() {
   scene.add(plane);
 
   textAt(0, 0, 0, "hello");
+
+  camera.position.z=1000;
+}
+
+function initFlyControls(){
+  controls = new THREE.FlyControls(camera);
+  controls.movementSpeed = 5; // default 1.0
+  //controls.rollSpeed = 0.1; // default 0.005
+  controls.dragToLook = true;
+}
+
+function initFirstPersonControls() {
+
+}
+
+function initPointerLockControls() {
+  
 }
 
 function update(t) {
   // a light orbiting the Y axis
+  // FIXME use the OrbitControls!
   var ORBIT_RADIUS = 200;
   LIGHTS[1].position.x = Math.cos(t / 1000) * -ORBIT_RADIUS;
   LIGHTS[1].marker.position.x = Math.cos(t / 1000) * -ORBIT_RADIUS;
   LIGHTS[1].position.z = Math.sin(t / 1000) * ORBIT_RADIUS;
   LIGHTS[1].marker.position.z = Math.sin(t / 1000) * ORBIT_RADIUS;
 
-  //camera.position.x = 100;
-  //camera.position.y = 100;
-  //camera.position.z = -600;
-  camera.position.x = Math.sin(t / 1000) * (WIDTH - MOUSE.x);
-  camera.position.y = HEIGHT - MOUSE.y;
-  camera.position.z = WIDTH - MOUSE.x;
+  // TODO functions for varyWithMouse and sinWave
+  //camera.position.x = Math.sin(t / 1000) * (WIDTH - MOUSE.x);
+  //camera.position.y = HEIGHT - MOUSE.y;
+  //camera.position.z = WIDTH - MOUSE.x;
   //camera.position.z = Math.cos(t / 1000) * (WIDTH - MOUSE.x);
+
+  controls.update(1);
+
   // you need to update lookAt every frame
-  camera.lookAt(scene.position);
+  //camera.lookAt(scene.position);
 }

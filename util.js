@@ -3,9 +3,13 @@
 //=============================================================================
 // general js
 //=============================================================================
+var TO_RADIANS = Math.PI / 180;
+var TO_DEGREES = 180 / Math.PI;
+
 function random(max) {
   return random(0, max);
 }
+
 function random(min, max) {
   if (max > min) {
     var range = max - min;
@@ -18,9 +22,6 @@ function random(min, max) {
 //=============================================================================
 // three.js
 //=============================================================================
-
-var TO_RADIANS = Math.PI / 180;
-var TO_DEGREES = 180 / Math.PI;
 
 // rendering objects
 var renderer, camera, scene;
@@ -98,17 +99,20 @@ function markerAt(x, y, z, mat) {
 
 // text will appear to top left of point, facing the camera
 function textAt(x, y, z, text) {
+  // make a canvas...
   var c = document.createElement('canvas');
   c.getContext('2d').font = '50px Arial';
   c.getContext('2d').fillText(text, 2, 50);
+  // ...into a texture
   var tex = new THREE.Texture(c);
   tex.needsUpdate = true;
+  // create material
   var mat = new THREE.MeshBasicMaterial({
-    map : tex
+    map : tex,
+    transparent : true,
+    side : THREE.DoubleSide
   });
-  mat.transparent = true;
   var textQuad = new THREE.Mesh(new THREE.PlaneGeometry(c.width/2, c.height/2), mat);
-  textQuad.doubleSided = true;
   textQuad.position.x = x;
   textQuad.position.y = y;
   textQuad.position.z = z;

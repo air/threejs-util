@@ -10,7 +10,7 @@ console.log('init complete');
 animate();
 
 function initEncounterObjects() {
-  markerAt(0,0,0);
+  markerAt(0,0,0, MATS.normal);
   scene.add(new THREE.AmbientLight(0x505050));
 }
 
