@@ -12,6 +12,7 @@ console.log('init complete');
 animate();
 
 function initTestObjects() {
+  //var redSphere = new THREE.Mesh(new THREE.SphereGeometry(50, 20, 20), MATS.red);
   var redSphere = new THREE.Mesh(new THREE.SphereGeometry(50, 20, 20), MATS.red);
   redSphere.position.x = 150;
   redSphere.position.y = 50;
@@ -30,12 +31,12 @@ function initTestObjects() {
   LIGHTS[0].position.y = 50;
   LIGHTS[0].position.z = 130;
   LIGHTS[0].castShadow = true;
-  markerAt(10, 50, 130, MATS.white);
+  markerAt(10, 50, 130, MATS.normal);
   scene.add(LIGHTS[0]);
 
   // this light will move
   LIGHTS[1] = new THREE.PointLight(0xFFFFFF);
-  LIGHTS[1].marker = markerAt(0, 0, 0, MATS.white);
+  LIGHTS[1].marker = markerAt(0, 0, 0, MATS.normal);
   scene.add(LIGHTS[1]);
 
   // general grey fill

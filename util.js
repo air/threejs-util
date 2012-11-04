@@ -66,6 +66,7 @@ function init3d() {
   MATS.yellow = new THREE.MeshLambertMaterial({
     color : 0xFFFF00
   });
+  MATS.normal = new THREE.MeshNormalMaterial();
 
   STATS = new Stats();
   STATS.domElement.style.position = 'absolute';
