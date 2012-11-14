@@ -1,6 +1,6 @@
 "use strict";
 
-var LIGHTS = new Array();
+var LIGHTS = new Array(); // not a constant, drop caps?
 var controls;
 
 // main

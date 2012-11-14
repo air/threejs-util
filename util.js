@@ -23,6 +23,9 @@ function random(min, max) {
 // three.js
 //=============================================================================
 
+// grab a namespace
+if (MY3 == null || typeof(MY3) != "object") { var MY3 = new Object(); } else { console.error('can\'t reserve namespace MY3'); }
+
 // rendering objects
 var renderer, camera, scene;
 // x and y
