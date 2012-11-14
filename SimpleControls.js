@@ -7,7 +7,7 @@ SimpleControls = function (object, domElement) {
   this.domElement = (domElement !== undefined) ? domElement : document;
 
   this.movementSpeed = 1.0;
-  this.turnSpeed = 0.03;
+  this.turnSpeed = 0.005;
 
   this.moveForward = false;
   this.moveBackward = false;

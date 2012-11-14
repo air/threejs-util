@@ -1,5 +1,9 @@
 "use strict";
 
+// Encounter facts
+// time for complete rotation: 9s
+// time to pass 10 obelisks: 8s
+
 // TODOs
 // everything's centred on the zero Y plane, put the ground there
 
@@ -12,12 +16,17 @@ OB.MAX_X = (OB.gridSizeX - 1) * OB.spacing;
 OB.MAX_Z = (OB.gridSizeZ - 1) * OB.spacing;
 OB.geometry = new THREE.CylinderGeometry(40, 40, 100, 16, 1, false); // topRadius, bottomRadius, height, segments, heightSegments
 
+// constants modelling the original game
+var ENCOUNTER = new Object();
+ENCOUNTER.drawDistance = 3000; // use with init3D()
+ENCOUNTER.movementSpeed = 1.2;
+ENCOUNTER.turnSpeed = 0.0007;
+
 var controls;
 
 // main
 init3d(OB.MAX_X);
 scene.add(new THREE.AxisHelper(300));
-//addHelpers();
 initEncounterObjects();
 initEncounterControls();
 document.body.appendChild(renderer.domElement);
@@ -36,14 +45,11 @@ function initEncounterObjects() {
   }
 }
 
-// inits at origin pointing up the X axis
+// can be invoked at runtime
 function initFlyControls() {
-  camera.position.z = OB.MAX_Z / 2;
-  camera.position.x = OB.MAX_X / 2;
-
   controls = new THREE.FirstPersonControls(camera);
-  controls.movementSpeed = 20; // default 1.0
-  controls.lookSpeed = 0.001; // default 0.005
+  controls.movementSpeed = 2.0;
+  controls.lookSpeed = 0.0001;
   controls.constrainVertical = true; // default false
   controls.verticalMin = 45 * TO_RADIANS;
   controls.verticalMax = 135 * TO_RADIANS;
@@ -54,12 +60,10 @@ function initEncounterControls() {
   camera.position.x = OB.MAX_X / 2;
 
   controls = new SimpleControls(camera);
-  controls.movementSpeed = 20; // default 1.0
-  controls.lookSpeed = 0.001; // default 0.005
+  controls.movementSpeed = ENCOUNTER.movementSpeed;
+  controls.turnSpeed = ENCOUNTER.turnSpeed;
 }
 
 function update(t) {
-  // FIXME updates
-  //console.info(t);
-  controls.update(1);
+  controls.update(t);
 }

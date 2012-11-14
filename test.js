@@ -106,6 +106,7 @@ function update(t) {
   //camera.position.z = WIDTH - MOUSE.x;
   //camera.position.z = Math.cos(t / 1000) * (WIDTH - MOUSE.x);
 
+  // FIXME for delta updates and smoothness
   controls.update(1);
 
   // you need to update lookAt every frame

@@ -26,6 +26,9 @@ function random(min, max) {
 // TODO: move all this stuff under this namespace
 if (MY3 == null || typeof(MY3) != "object") { var MY3 = new Object(); } else { console.error('can\'t reserve namespace MY3'); }
 
+// init timing
+MY3.time = new Date().getTime();
+
 // rendering objects
 var renderer, camera, scene;
 // x and y
@@ -155,7 +158,12 @@ function render() {
 // req: update(t)
 function animate() {
   requestAnimationFrame(animate);
-  update(new Date().getTime());
+  
+  // TODO I think we could get this from STATS, at the cost of dependency
+  var now = new Date().getTime();
+  update(now - MY3.time);
+  MY3.time = now;
+
   render();
   STATS.update();
 }
