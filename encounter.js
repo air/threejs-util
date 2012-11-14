@@ -16,9 +16,10 @@ var controls;
 
 // main
 init3d(OB.MAX_X);
-addHelpers();
+scene.add(new THREE.AxisHelper(300));
+//addHelpers();
 initEncounterObjects();
-initControls();
+initEncounterControls();
 document.body.appendChild(renderer.domElement);
 initListeners();
 console.log('init complete');
@@ -36,9 +37,10 @@ function initEncounterObjects() {
 }
 
 // inits at origin pointing up the X axis
-function initControls() {
+function initFlyControls() {
   camera.position.z = OB.MAX_Z / 2;
   camera.position.x = OB.MAX_X / 2;
+
   controls = new THREE.FirstPersonControls(camera);
   controls.movementSpeed = 20; // default 1.0
   controls.lookSpeed = 0.001; // default 0.005
@@ -47,6 +49,17 @@ function initControls() {
   controls.verticalMax = 135 * TO_RADIANS;
 }
 
+function initEncounterControls() {
+  camera.position.z = OB.MAX_Z / 2;
+  camera.position.x = OB.MAX_X / 2;
+
+  controls = new SimpleControls(camera);
+  controls.movementSpeed = 20; // default 1.0
+  controls.lookSpeed = 0.001; // default 0.005
+}
+
 function update(t) {
+  // FIXME updates
+  //console.info(t);
   controls.update(1);
 }
