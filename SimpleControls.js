@@ -1,6 +1,6 @@
 // Adapted from THREE.FirstPersonControls
 
-// TODO crosshairs
+// TODO crosshairs, translucent
 
 SimpleControls = function (object, domElement) {
   this.object = object;
