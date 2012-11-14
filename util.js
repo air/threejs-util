@@ -23,7 +23,7 @@ function random(min, max) {
 // three.js
 //=============================================================================
 
-// grab a namespace
+// TODO: move all this stuff under this namespace
 if (MY3 == null || typeof(MY3) != "object") { var MY3 = new Object(); } else { console.error('can\'t reserve namespace MY3'); }
 
 // rendering objects
@@ -42,11 +42,13 @@ var STATS;
 
 // TODO add custom counters to STATS
 
-function init3d() {
+// optional args:
+// far - draw distance, defaults to 10,000
+function init3d(far) {
   var VIEW_ANGLE = 45; // degrees not radians
   var ASPECT = WIDTH / HEIGHT;
   var NEAR = 0.1; // objects closer than this won't render
-  var FAR = 10000; // objects further away than this won't render
+  var FAR = (typeof far === "undefined") ? 10000 : far;
 
   renderer = new THREE.WebGLRenderer();
   camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
