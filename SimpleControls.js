@@ -24,7 +24,6 @@ SimpleControls = function (object, domElement) {
   }
 
   this.onKeyDown = function (event) {
-    //event.preventDefault();
     switch (event.keyCode) {
 
       case 38: /*up*/

@@ -1,5 +1,7 @@
 "use strict";
 
+if (UTIL == null || typeof(UTIL) != "object") { var UTIL = new Object(); } else { console.error('can\'t reserve namespace UTIL'); }
+
 //=============================================================================
 // general js
 //=============================================================================
@@ -19,6 +21,7 @@ function random(min, max) {
     return 0;
   }
 }
+
 //=============================================================================
 // three.js
 //=============================================================================
@@ -97,9 +100,7 @@ function markerAt(x, y, z, mat) {
     mat = MATS.yellow;
   }
   var marker = new THREE.Mesh(new THREE.SphereGeometry(10, 16, 16), mat);
-  marker.position.x = x;
-  marker.position.y = y;
-  marker.position.z = z;
+  marker.position.set(x, y, z);
   marker.castShadow = true;
   scene.add(marker);
   return marker;
@@ -121,9 +122,7 @@ function textAt(x, y, z, text) {
     side : THREE.DoubleSide
   });
   var textQuad = new THREE.Mesh(new THREE.PlaneGeometry(c.width/2, c.height/2), mat);
-  textQuad.position.x = x;
-  textQuad.position.y = y;
-  textQuad.position.z = z;
+  textQuad.position.set(x, y, z);
   scene.add(textQuad);
   return textQuad;
 }
