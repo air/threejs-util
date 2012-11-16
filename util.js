@@ -127,17 +127,10 @@ function textAt(x, y, z, text) {
   return textQuad;
 }
 
-// add p to pause
 // add mouse listener
 // init mouse to center
 // req: onDocumentMouseMove
 function initListeners() {
-  // stop the script if we hit 'p' and debugger is open
-  $(window).keydown(function(e) {
-    if (e.keyCode == 80) {
-      debugger;
-    }
-  });
   // capture mouse moves
   document.addEventListener('mousemove', onDocumentMouseMove, false);
   MOUSE.x = HALFWIDTH;
