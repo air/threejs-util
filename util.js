@@ -153,8 +153,9 @@ function animate() {
   
   // TODO I think we could get this from STATS, at the cost of dependency
   var now = new Date().getTime();
-  update(now - MY3.time);
+  var delta = now - MY3.time;
   MY3.time = now;
+  update(delta);
 
   render();
   STATS.update();
