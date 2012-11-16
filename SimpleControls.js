@@ -25,46 +25,59 @@ SimpleControls = function (object, domElement) {
 
   this.onKeyDown = function (event) {
     switch (event.keyCode) {
+      case 38: // up
+      case 87: // w
+        this.moveForward = true;
+        break;
 
-      case 38: /*up*/
-      case 87: /*W*/ this.moveForward = true; break;
+      case 37: // left
+      case 65: // a
+        if (this.canStrafe) {
+          this.moveLeft = true;
+        } else {
+          this.turnLeft = true;
+        }
+        break;
 
-      case 37: /*left*/
-      case 65: /*A*/
-      if (this.canStrafe) {
-        this.moveLeft = true;
-      } else {
-        this.turnLeft = true;
-      }
-      break;
+      case 40: // down
+      case 83: // s
+        this.moveBackward = true;
+        break;
 
-      case 40: /*down*/
-      case 83: /*S*/ this.moveBackward = true; break;
-
-      case 39: /*right*/
-      case 68: /*D*/
-      if (this.canStrafe) {
-        this.moveRight = true;
-      } else {
-        this.turnRight = true;
-      }
-      break;
+      case 39: // right
+      case 68: // d
+        if (this.canStrafe) {
+          this.moveRight = true;
+        } else {
+          this.turnRight = true;
+        }
+        break;
     }
   };
 
   this.onKeyUp = function (event) {
     switch(event.keyCode) {
-      case 38: /*up*/
-      case 87: /*W*/ this.moveForward = false; break;
+      case 38: // up
+      case 87: // w
+        this.moveForward = false;
+        break;
 
-      case 37: /*left*/
-      case 65: /*A*/ this.moveLeft = false; this.turnLeft = false; break;
+      case 37: // left
+      case 65: // a
+        this.moveLeft = false;
+        this.turnLeft = false;
+        break;
 
-      case 40: /*down*/
-      case 83: /*S*/ this.moveBackward = false; break;
+      case 40: // down
+      case 83: // s
+        this.moveBackward = false;
+        break;
 
-      case 39: /*right*/
-      case 68: /*D*/ this.moveRight = false; this.turnRight = false; break;
+      case 39: // right
+      case 68: // d
+        this.moveRight = false;
+        this.turnRight = false;
+        break;
     }
   };
 

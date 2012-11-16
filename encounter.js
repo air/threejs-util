@@ -15,16 +15,19 @@ OB.height = 100;
 OB.radius = 40;
 OB.MAX_X = (OB.gridSizeX - 1) * OB.spacing;
 OB.MAX_Z = (OB.gridSizeZ - 1) * OB.spacing;
-OB.geometry = new THREE.CylinderGeometry(OB.radius, OB.radius, OB.height, 16, 1, false); // topRadius, bottomRadius, height, segments, heightSegments
 
 // player
 var PLAYER = new Object();
 PLAYER.cameraHeight = OB.height / 2;
+PLAYER.shots = new Object();
+PLAYER.shots.interval = 1000; // ms
+PLAYER.shots.allowed = 3;
+PLAYER.shots.lastTimeFired = 0;
+PLAYER.shots.inFlight = 0;
 
 // shots
 var SHOT = new Object();
 SHOT.radius = 45;
-SHOT.geometry = new THREE.SphereGeometry(SHOT.radius);
 
 // constants modelling the original game
 var ENCOUNTER = new Object();
@@ -34,7 +37,9 @@ ENCOUNTER.turnSpeed = 0.0007;
 ENCOUNTER.shotSpeed = 1.8; // TODO confirm
 
 // objects we want visible in the debugger
-var controls;
+var cameraControls;
+var keys = new EncounterKeys();
+var sound = new EncounterSound();
 var GROUND = new Object();
 
 // main
@@ -48,10 +53,16 @@ console.info('init complete');
 animate();
 
 function initEncounterObjects() {
+  OB.geometry = new THREE.CylinderGeometry(OB.radius, OB.radius, OB.height, 16, 1, false); // topRadius, bottomRadius, height, segments, heightSegments
+  OB.material = MATS.normal;
+
+  SHOT.geometry = new THREE.SphereGeometry(SHOT.radius);
+  SHOT.material = MATS.normal;
+
   // TODO consider adding all obelisks to an invisible parent object
   for (var xpos=0; xpos<(OB.gridSizeX * OB.spacing); xpos+=OB.spacing) {
     for (var zpos=0; zpos<(OB.gridSizeZ * OB.spacing); zpos+=OB.spacing) {
-      var obelisk = new THREE.Mesh(OB.geometry, MATS.normal);
+      var obelisk = new THREE.Mesh(OB.geometry, OB.material);
       obelisk.position.set(xpos, OB.height / 2, zpos);
       scene.add(obelisk);
     }
@@ -80,20 +91,46 @@ function initEncounterObjects() {
 
 // can be invoked at runtime
 function initFlyControls() {
-  controls = new THREE.FirstPersonControls(camera);
-  controls.movementSpeed = 2.0;
-  controls.lookSpeed = 0.0001;
-  controls.constrainVertical = true; // default false
-  controls.verticalMin = 45 * TO_RADIANS;
-  controls.verticalMax = 135 * TO_RADIANS;
+  cameraControls = new THREE.FirstPersonControls(camera);
+  cameraControls.movementSpeed = 2.0;
+  cameraControls.lookSpeed = 0.0001;
+  cameraControls.constrainVertical = true; // default false
+  cameraControls.verticalMin = 45 * TO_RADIANS;
+  cameraControls.verticalMax = 135 * TO_RADIANS;
 }
 
 function initEncounterControls() {
-  controls = new SimpleControls(camera);
-  controls.movementSpeed = ENCOUNTER.movementSpeed;
-  controls.turnSpeed = ENCOUNTER.turnSpeed;
+  cameraControls = new SimpleControls(camera);
+  cameraControls.movementSpeed = ENCOUNTER.movementSpeed;
+  cameraControls.turnSpeed = ENCOUNTER.turnSpeed;
+}
+
+function interpretKeys(t) {
+  if (keys.shooting) {
+    if (PLAYER.shots.inFlight < PLAYER.shots.allowed) {
+      var now = new Date().getTime();
+      var timeSinceLastShot = now - PLAYER.shots.lastTimeFired;
+      if (timeSinceLastShot > PLAYER.shots.interval) {
+        shoot(camera);
+        PLAYER.shots.inFlight += 1;
+        PLAYER.shots.lastTimeFired = now;
+      }
+      
+    }
+  }
+}
+
+function shoot(firingObject) {
+  console.info('BAM!');
+  sound.playerShoot();
+}
+
+function updateGameState(t) {
+  // no op
 }
 
 function update(t) {
-  controls.update(t);
+  cameraControls.update(t);
+  interpretKeys(t);
+  updateGameState(t);
 }
