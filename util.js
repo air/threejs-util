@@ -1,6 +1,6 @@
 "use strict";
 
-if (UTIL == null || typeof(UTIL) != "object") { var UTIL = new Object(); } else { console.error('can\'t reserve namespace UTIL'); }
+if (UTIL == null || typeof(UTIL) != "object") { var UTIL = new Object(); } else { throw('can\'t reserve namespace UTIL'); }
 
 //=============================================================================
 // general js
@@ -27,7 +27,7 @@ function random(min, max) {
 //=============================================================================
 
 // TODO: move all this stuff under this namespace
-if (MY3 == null || typeof(MY3) != "object") { var MY3 = new Object(); } else { console.error('can\'t reserve namespace MY3'); }
+if (MY3 == null || typeof(MY3) != "object") { var MY3 = new Object(); } else { throw('can\'t reserve namespace MY3'); }
 
 // init timing
 MY3.time = new Date().getTime();
