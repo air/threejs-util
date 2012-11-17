@@ -85,18 +85,19 @@ function addHelpers(){
   scene.add(camHelp);
 }
 
-// pass in Vector3s
-function lineBetween(startPosition, endPosition) {
+// extended THREE.Line
+MY3.Line = function(startPos, endPos) {
   var lineGeometry = new THREE.Geometry();
-  lineGeometry.vertices.push(startPosition);
-  lineGeometry.vertices.push(endPosition);
+  lineGeometry.vertices.push(startPos);
+  lineGeometry.vertices.push(endPos);
   lineGeometry.colors.push(new THREE.Color( 0xff0000 ));
   lineGeometry.colors.push(new THREE.Color( 0x0000ff ));
-
-  var line = new THREE.Line(lineGeometry, MATS.lineVertex);
-  scene.add(line);
-  return line;
-}
+  THREE.Line.call(this, lineGeometry, MATS.lineVertex); // super constructor
+};
+MY3.Line.prototype = Object.create(THREE.Line.prototype);
+MY3.Line.prototype.setEnd = function(position) {
+  // no op - will this animate/update correctly if we change the geometry?
+};
 
 // mat is optional, defaults to yellow
 // req: scene
