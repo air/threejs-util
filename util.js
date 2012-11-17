@@ -63,22 +63,14 @@ function init3d(far) {
   renderer.setSize(WIDTH, HEIGHT);
   renderer.shadowMapEnabled = true;
 
-  MATS.red = new THREE.MeshLambertMaterial({
-    color : 0xDD0000
-  });
-  MATS.blue = new THREE.MeshLambertMaterial({
-    color : 0x0000DD
-  });
-  MATS.green = new THREE.MeshLambertMaterial({
-    color : 0x00DD00
-  });
-  MATS.white = new THREE.MeshLambertMaterial({
-    color : 0xFFFFFF
-  });
-  MATS.yellow = new THREE.MeshLambertMaterial({
-    color : 0xFFFF00
-  });
+  MATS.red = new THREE.MeshLambertMaterial({ color : 0xDD0000 });
+  MATS.blue = new THREE.MeshLambertMaterial({ color : 0x0000DD });
+  MATS.green = new THREE.MeshLambertMaterial({ color : 0x00DD00 });
+  MATS.white = new THREE.MeshLambertMaterial({ color : 0xFFFFFF });
+  MATS.yellow = new THREE.MeshLambertMaterial({ color : 0xFFFF00 });
   MATS.normal = new THREE.MeshNormalMaterial();
+
+  MATS.lineVertex = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors } );
 
   STATS = new Stats();
   STATS.domElement.style.position = 'absolute';
@@ -91,6 +83,19 @@ function addHelpers(){
   scene.add(axis);
   var camHelp = new THREE.CameraHelper(camera);
   scene.add(camHelp);
+}
+
+// pass in Vector3s
+function lineBetween(startPosition, endPosition) {
+  var lineGeometry = new THREE.Geometry();
+  lineGeometry.vertices.push(startPosition);
+  lineGeometry.vertices.push(endPosition);
+  lineGeometry.colors.push(new THREE.Color( 0xff0000 ));
+  lineGeometry.colors.push(new THREE.Color( 0x0000ff ));
+
+  var line = new THREE.Line(lineGeometry, MATS.lineVertex);
+  scene.add(line);
+  return line;
 }
 
 // mat is optional, defaults to yellow
@@ -150,7 +155,7 @@ function render() {
 // req: update(t)
 function animate() {
   requestAnimationFrame(animate);
-  
+
   // TODO I think we could get this from STATS, at the cost of dependency
   var now = new Date().getTime();
   var delta = now - MY3.time;
