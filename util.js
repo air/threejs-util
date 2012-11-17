@@ -103,24 +103,35 @@ MY3.Line.prototype.setEnd = function(position) {
 // 1. Point along a normalized vector, or
 // TODO 2. Point at another arbitrary position if the pointAt arg is present
 // default length is 200
+// FIXME these lines always report a position of 0,0,0
 MY3.Pointer = function(position, direction, length, pointAt) {
   var length = (typeof length === "undefined") ? 200 : length;
   if (typeof pointAt === "undefined") {
-    // use a normal vector
+    // 1. use a normal vector
     if (!MY3.isNormal(direction)) throw ('direction must be a normal, length: ' + direction.length());
     var endPoint = direction.clone().multiplyScalar(length);
-  endPoint.add(endPoint, position);
+    endPoint.add(endPoint, position);
+
+    var lineGeometry = new THREE.Geometry();
+    lineGeometry.vertices.push(position);
+    lineGeometry.vertices.push(endPoint);
+    lineGeometry.colors.push(new THREE.Color( 0x00aa00 ));
+    lineGeometry.colors.push(new THREE.Color( 0xffffff ));
+    THREE.Line.call(this, lineGeometry, MATS.lineVertex); // super constructor
   } else {
-    // point at something
+    // 2. point at something
+    // first create at the origin with our length pointing 'forward'
+    var lineGeometry = new THREE.Geometry();
+    lineGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    lineGeometry.vertices.push(new THREE.Vector3(0, 0, length));
+    lineGeometry.colors.push(new THREE.Color( 0x00aa00 ));
+    lineGeometry.colors.push(new THREE.Color( 0xffffff ));
 
+    THREE.Line.call(this, lineGeometry, MATS.lineVertex); // super constructor
+    // then move and rotate
+    this.position.copy(position);
+    this.lookAt(direction);
   }
-
-  var lineGeometry = new THREE.Geometry();
-  lineGeometry.vertices.push(position);
-  lineGeometry.vertices.push(endPoint);
-  lineGeometry.colors.push(new THREE.Color( 0x00aa00 ));
-  lineGeometry.colors.push(new THREE.Color( 0xffffff ));
-  THREE.Line.call(this, lineGeometry, MATS.lineVertex); // super constructor
 }
 MY3.Pointer.prototype = Object.create(THREE.Line.prototype);
 
