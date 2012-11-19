@@ -68,7 +68,9 @@ function init3d(far) {
   MATS.green = new THREE.MeshLambertMaterial({ color : 0x00DD00 });
   MATS.white = new THREE.MeshLambertMaterial({ color : 0xFFFFFF });
   MATS.yellow = new THREE.MeshLambertMaterial({ color : 0xFFFF00 });
+
   MATS.normal = new THREE.MeshNormalMaterial();
+  MATS.wireframe = new THREE.MeshBasicMaterial({color : 0xFFFFFF, wireframe: true, transparent: true});
 
   // TODO linewidth is broken https://github.com/mrdoob/three.js/issues/269
   MATS.lineVertex = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth: 1 } );
@@ -141,11 +143,11 @@ MY3.isNormal = function(vector) {
   return (diff < 0.01);
 }
 
-// mat is optional, defaults to yellow
+// mat is optional, default is wireframe
 // req: scene
 function markerAt(x, y, z, mat) {
   if (!mat) {
-    mat = MATS.yellow;
+    mat = MATS.normal;
   }
   var marker = new THREE.Mesh(new THREE.SphereGeometry(10, 16, 16), mat);
   marker.position.set(x, y, z);
