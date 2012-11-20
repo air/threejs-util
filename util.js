@@ -102,10 +102,10 @@ MY3.Line.prototype.setEnd = function(position) {
   // no op - will this animate/update correctly if we change the geometry?
 };
 
+// FIXME pointing at a normalized vector doesn't work?
 // 1. Point along a normalized vector, or
-// TODO 2. Point at another arbitrary position if the pointAt arg is present
+// 2. Point at another arbitrary position if the pointAt arg is present
 // default length is 200
-// FIXME these lines always report a position of 0,0,0
 MY3.Pointer = function(position, direction, length, pointAt) {
   var length = (typeof length === "undefined") ? 200 : length;
   if (typeof pointAt === "undefined") {

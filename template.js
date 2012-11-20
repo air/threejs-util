@@ -24,7 +24,7 @@ function initFirstPersonControls() {
 function initObjects() {
   var m1 = markerAt(0, 0, 0, MATS.normal);
   var m2 = markerAt(0, 150, 200, MATS.normal);
-  lineBetween(m1.position, m2.position);
+  //lineBetween(m1.position, m2.position);
 
   camera.position.z=1000;
   camera.lookAt(scene.position);
