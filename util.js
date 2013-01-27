@@ -22,6 +22,22 @@ function random(min, max) {
   }
 }
 
+// add mouse listener
+// init mouse to center
+// req: onDocumentMouseMove
+function initListeners() {
+  // capture mouse moves
+  document.addEventListener('mousemove', onDocumentMouseMove, false);
+  MOUSE.x = HALFWIDTH;
+  MOUSE.y = HALFHEIGHT;
+}
+
+// capture mouse moves
+function onDocumentMouseMove(event) {
+  MOUSE.x = event.clientX;
+  MOUSE.y = event.clientY;
+}
+
 //=============================================================================
 // three.js
 //=============================================================================
@@ -112,7 +128,7 @@ MY3.Pointer = function(position, direction, length, pointAt) {
     // 1. use a normal vector
     if (!MY3.isNormal(direction)) throw ('direction must be a normal, length: ' + direction.length());
     var endPoint = direction.clone().multiplyScalar(length);
-    endPoint.add(endPoint, position);
+    endPoint.add(position);
 
     var lineGeometry = new THREE.Geometry();
     lineGeometry.vertices.push(position);
@@ -177,22 +193,6 @@ function textAt(x, y, z, text) {
   return textQuad;
 }
 
-// add mouse listener
-// init mouse to center
-// req: onDocumentMouseMove
-function initListeners() {
-  // capture mouse moves
-  document.addEventListener('mousemove', onDocumentMouseMove, false);
-  MOUSE.x = HALFWIDTH;
-  MOUSE.y = HALFHEIGHT;
-}
-
-// capture mouse moves
-function onDocumentMouseMove(event) {
-  MOUSE.x = event.clientX;
-  MOUSE.y = event.clientY;
-}
-
 function render() {
   renderer.render(scene, camera);
 }
@@ -210,4 +210,3 @@ function animate() {
   render();
   STATS.update();
 }
-
