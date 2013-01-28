@@ -126,7 +126,7 @@ MY3.Pointer = function(position, direction, length, pointAt) {
   var length = (typeof length === "undefined") ? 200 : length;
   if (typeof pointAt === "undefined") {
     // 1. use a normal vector
-    if (!MY3.isNormal(direction)) throw ('direction must be a normal, length: ' + direction.length());
+    if (!MY3.isNormalised(direction)) throw ('direction must be a normal, length: ' + direction.length());
     var endPoint = direction.clone().multiplyScalar(length);
     endPoint.add(position);
 
@@ -154,7 +154,7 @@ MY3.Pointer = function(position, direction, length, pointAt) {
 MY3.Pointer.prototype = Object.create(THREE.Line.prototype);
 
 // true if the vector length is within a small delta of 1
-MY3.isNormal = function(vector) {
+MY3.isNormalised = function(vector) {
   var diff = Math.abs(1 - vector.length());
   return (diff < 0.01);
 }
