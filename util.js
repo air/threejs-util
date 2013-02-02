@@ -47,6 +47,7 @@ if (MY3 == null || typeof(MY3) != "object") { var MY3 = new Object(); } else { t
 
 // init timing - pass autoStart to start the clock the next time it's called
 var clock = new THREE.Clock(true);
+clock.multiplier = 1000; // expose this so we can manipulate it for fun times
 
 // rendering objects
 var renderer, camera, scene;
@@ -201,7 +202,7 @@ function render() {
 function animate() {
   requestAnimationFrame(animate);
 
-  update(clock.getDelta() * 1000);
+  update(clock.getDelta() * clock.multiplier);
 
   render();
   STATS.update();
