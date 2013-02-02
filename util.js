@@ -45,8 +45,8 @@ function onDocumentMouseMove(event) {
 // TODO: move all this stuff under this namespace
 if (MY3 == null || typeof(MY3) != "object") { var MY3 = new Object(); } else { throw('can\'t reserve namespace MY3'); }
 
-// init timing
-MY3.time = new Date().getTime();
+// init timing - pass autoStart to start the clock the next time it's called
+var clock = new THREE.Clock(true);
 
 // rendering objects
 var renderer, camera, scene;
@@ -201,11 +201,7 @@ function render() {
 function animate() {
   requestAnimationFrame(animate);
 
-  // TODO I think we could get this from STATS, at the cost of dependency
-  var now = new Date().getTime();
-  var delta = now - MY3.time;
-  MY3.time = now;
-  update(delta);
+  update(clock.getDelta() * 1000);
 
   render();
   STATS.update();
