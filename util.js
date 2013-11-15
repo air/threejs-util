@@ -60,6 +60,16 @@ var HALFWIDTH = window.innerWidth / 2;
 var HALFHEIGHT = window.innerHeight / 2;
 // material constants
 var MATS = {};
+MATS.red = new THREE.MeshLambertMaterial({ color : 0xDD0000 });
+MATS.blue = new THREE.MeshLambertMaterial({ color : 0x0000DD });
+MATS.green = new THREE.MeshLambertMaterial({ color : 0x00DD00 });
+MATS.white = new THREE.MeshLambertMaterial({ color : 0xFFFFFF });
+MATS.yellow = new THREE.MeshLambertMaterial({ color : 0xFFFF00 });
+MATS.normal = new THREE.MeshNormalMaterial();
+MATS.wireframe = new THREE.MeshBasicMaterial({color : 0xFFFFFF, wireframe: true, transparent: true});
+// TODO linewidth is broken https://github.com/mrdoob/three.js/issues/269
+MATS.lineVertex = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth: 1 } );
+
 // fps counter
 var STATS;
 
@@ -79,18 +89,6 @@ function init3d(far) {
   scene.add(camera);
   renderer.setSize(WIDTH, HEIGHT);
   renderer.shadowMapEnabled = true;
-
-  MATS.red = new THREE.MeshLambertMaterial({ color : 0xDD0000 });
-  MATS.blue = new THREE.MeshLambertMaterial({ color : 0x0000DD });
-  MATS.green = new THREE.MeshLambertMaterial({ color : 0x00DD00 });
-  MATS.white = new THREE.MeshLambertMaterial({ color : 0xFFFFFF });
-  MATS.yellow = new THREE.MeshLambertMaterial({ color : 0xFFFF00 });
-
-  MATS.normal = new THREE.MeshNormalMaterial();
-  MATS.wireframe = new THREE.MeshBasicMaterial({color : 0xFFFFFF, wireframe: true, transparent: true});
-
-  // TODO linewidth is broken https://github.com/mrdoob/three.js/issues/269
-  MATS.lineVertex = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth: 1 } );
 
   STATS = new Stats();
   STATS.domElement.style.position = 'absolute';
