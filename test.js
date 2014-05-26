@@ -4,16 +4,16 @@ var LIGHTS = new Array(); // not a constant, drop caps?
 var controls;
 
 // main
-init3d();
-addHelpers();
+MY3.init3d();
+MY3.addHelpers();
 initTestObjects();
 //initFlyControls();
 initFirstPersonControls();
 //initPointerLockControls();
 document.body.appendChild(renderer.domElement);
-initListeners();
+MY3.initMouseHandler();
 console.log('init complete');
-animate();
+MY3.startAnimationLoop();
 
 function initTestObjects() {
   var redSphere = new THREE.Mesh(new THREE.SphereGeometry(50, 20, 20), MATS.red);
@@ -23,10 +23,10 @@ function initTestObjects() {
   redSphere.castShadow = true;
   scene.add(redSphere);
 
-  markerAt(0, 0, 0, MATS.green);
-  markerAt(200, 0, 0);
-  markerAt(0, 200, 0);
-  markerAt(0, 0, 200);
+  MY3.markerAt(0, 0, 0, MATS.green);
+  MY3.markerAt(200, 0, 0);
+  MY3.markerAt(0, 200, 0);
+  MY3.markerAt(0, 0, 200);
 
   // note spotlights have a cone of effect
   LIGHTS[0] = new THREE.SpotLight(0xFFFFFF);
@@ -34,12 +34,12 @@ function initTestObjects() {
   LIGHTS[0].position.y = 50;
   LIGHTS[0].position.z = 130;
   LIGHTS[0].castShadow = true;
-  markerAt(10, 50, 130, MATS.normal);
+  MY3.markerAt(10, 50, 130, MATS.normal);
   scene.add(LIGHTS[0]); 
 
   // this light will move
   LIGHTS[1] = new THREE.PointLight(0xFFFFFF);
-  LIGHTS[1].marker = markerAt(0, 0, 0, MATS.normal);
+  LIGHTS[1].marker = MY3.markerAt(0, 0, 0, MATS.normal);
   scene.add(LIGHTS[1]);
 
   // general grey fill
@@ -53,13 +53,13 @@ function initTestObjects() {
   planeMat.side = THREE.DoubleSide;
   var plane = new THREE.Mesh(planeGeo, planeMat);
   // plane inits as a wall facing the camera, turn away to make a floor
-  plane.rotation.x = -90 * TO_RADIANS;
+  plane.rotation.x = -90 * UTIL.TO_RADIANS;
   // sink the floor to get shadows
   plane.position.y = -30;
   plane.receiveShadow = true;
   scene.add(plane);
 
-  textAt(0, 0, 0, "hello");
+  MY3.textAt(0, 0, 0, "hello");
 
   camera.position.z=1000;
 }
@@ -79,8 +79,8 @@ function initFirstPersonControls() {
   controls.movementSpeed = 5; // default 1.0
   controls.lookSpeed = 0.001; // default 0.005
   controls.constrainVertical = true; // default false
-  controls.verticalMin = 45 * TO_RADIANS;
-  controls.verticalMax = 135 * TO_RADIANS;
+  controls.verticalMin = 45 * UTIL.TO_RADIANS;
+  controls.verticalMax = 135 * UTIL.TO_RADIANS;
 
 }
 
